@@ -44,7 +44,7 @@ public:
 		this->element = copy->element;
 	}
 	 
-	void view()
+	void View()
 	{
 		for (int i = 0; i < degree; i++)
 		{
@@ -55,8 +55,12 @@ public:
 			std::cout << std::endl;
 		}
 	}
+	Matrix Transponse()
+	{
+		double** transposedElement = new double* [degree];
+	}
 	//Find Det for matrix
-	double det()
+	double Det()
 	{
 		int row = 0;
 		double det = 0;
