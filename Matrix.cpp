@@ -73,6 +73,10 @@ public:
 		}
 		return new Matrix(degree, transposedElement);
 	}
+	Matrix Inverse()
+	{
+
+	}
 	//Find Det for matrix
 	double Det()
 	{
