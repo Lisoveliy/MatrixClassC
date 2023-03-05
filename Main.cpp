@@ -9,7 +9,7 @@ int main()
 		new double[3]{10, 9, 0}
 	};
 	Matrix* matrix = new Matrix(3, elements);
-	matrix->view();
-	double ans = matrix->det();
-	std::cout << "ans is: " << ans;
+	matrix->View();
+	std::cout << std::endl;
+	matrix->Transponse().View();
 }

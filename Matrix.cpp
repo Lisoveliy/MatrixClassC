@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <math.h>
 
 class Matrix {
 private:
@@ -30,8 +31,8 @@ public:
 		this->degree = 3;
 		this->element = new double* [3] {
 			new double[3] {0, 0, 0},
-			new double[3] {0, 0, 0},
-			new double[3] {0, 0, 0}
+				new double[3] {0, 0, 0},
+				new double[3] {0, 0, 0}
 		};
 	}
 	Matrix(int degree, double** element) {
@@ -43,7 +44,7 @@ public:
 		this->degree = copy->degree;
 		this->element = copy->element;
 	}
-	 
+
 	void View()
 	{
 		for (int i = 0; i < degree; i++)
@@ -58,6 +59,19 @@ public:
 	Matrix Transponse()
 	{
 		double** transposedElement = new double* [degree];
+		for (int i = 0; i < degree; i++)
+		{
+			transposedElement[i] = new double[degree];
+		}
+		for (int i = 0; i < degree; i++)
+		{
+			for (int i2 = 0; i2 < degree; i2++)
+			{
+				int reverseIndex = abs(degree - 1 - i);
+				transposedElement[reverseIndex][i2] = element[i2][reverseIndex];
+			}
+		}
+		return new Matrix(degree, transposedElement);
 	}
 	//Find Det for matrix
 	double Det()
