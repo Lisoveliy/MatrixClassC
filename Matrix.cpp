@@ -37,12 +37,37 @@ public:
 	}
 	Matrix(int degree, double** element) {
 		this->degree = degree;
-		this->element = element;
+		double** newelement = new double* [degree];
+		for (int i = 0; i < degree; i++)
+		{
+			newelement[i] = new double[degree];
+			for (int i2 = 0; i2 < degree; i2++)
+			{
+				newelement[i][i2] = element[i][i2];
+			}
+		}
+		this->element = newelement;
 	}
 	Matrix(Matrix* copy)
 	{
 		this->degree = copy->degree;
-		this->element = copy->element;
+		double** newelement = new double* [degree];
+		for (int i = 0; i < degree; i++)
+		{
+			newelement[i] = new double[degree];
+			for (int i2 = 0; i2 < degree; i2++)
+			{
+				newelement[i][i2] = copy->element[i][i2];
+			}
+		}
+		this->element = newelement;
+	}
+	~Matrix()
+	{
+		for (int i = 0; i < degree; i++)
+		{
+			delete[] element[i];
+		}
 	}
 
 	void View()
@@ -73,9 +98,70 @@ public:
 		}
 		return new Matrix(degree, transposedElement);
 	}
-	Matrix Inverse()
+	//I died here
+	void Inverse()
 	{
+		double** A = element;
+		int N = degree;
+		double temp;
 
+		double** E = new double* [N];
+
+		for (int i = 0; i < N; i++)
+			E[i] = new double[N];
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+			{
+				E[i][j] = 0.0;
+
+				if (i == j)
+					E[i][j] = 1.0;
+			}
+
+		for (int k = 0; k < N; k++)
+		{
+			temp = A[k][k];
+
+			for (int j = 0; j < N; j++)
+			{
+				A[k][j] /= temp;
+				E[k][j] /= temp;
+			}
+
+			for (int i = k + 1; i < N; i++)
+			{
+				temp = A[i][k];
+
+				for (int j = 0; j < N; j++)
+				{
+					A[i][j] -= A[k][j] * temp;
+					E[i][j] -= E[k][j] * temp;
+				}
+			}
+		}
+
+		for (int k = N - 1; k > 0; k--)
+		{
+			for (int i = k - 1; i >= 0; i--)
+			{
+				temp = A[i][k];
+
+				for (int j = 0; j < N; j++)
+				{
+					A[i][j] -= A[k][j] * temp;
+					E[i][j] -= E[k][j] * temp;
+				}
+			}
+		}
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				A[i][j] = E[i][j];
+
+		for (int i = 0; i < N; i++)
+			delete[] E[i];
+		delete[] E;
 	}
 	//Find Det for matrix
 	double Det()
