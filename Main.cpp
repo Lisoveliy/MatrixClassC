@@ -14,7 +14,7 @@ void logo()
 	std::wcout << "   | |\\/| |/ _` | __| '__| \\ \\/ / | |   | |/ _` / __/ __| | |   | '_ \\ / _ \\/ __| |/ / _ \\ '__|  " << std::endl;
 	std::wcout << "   | |  | | (_| | |_| |  | |>  <  | \\__/\\ | (_| \\__ \\__ \\ | \\__/\\ | | |  __/ (__|   <  __/ |     " << std::endl;
 	std::wcout << "   \\_|  |_/\\__,_|\\__|_|  |_/_/\\_\\ \\_____/_|\\__,_|___/___/ \\_____/_| |_|\\___|\\___|_|\\_\\___|_|     " << std::endl;
-
+	std::wcout << std::endl << L"Помощь - help" << std::endl;
 }
 void help()
 {
@@ -27,14 +27,43 @@ void help()
 std::wstring requestCommand()
 {
 
-	std::wcout << L"Комманда:";
+	std::wcout << L"Команда:";
 	std::wstring input;
 	std::getline(std::wcin, input);
 	return input;
 }
+void ClearConsole()
+{
+	std::wcout << "\x1B[2J\x1B[H";//clear console escape
+}
+Matrix createMatrix()
+{
+	ClearConsole();
+	bool valid = false;
+	while (!valid)
+	{
+		std::wcout << L"Укажите размер квадратной матрицы (back - назад): ";
+		std::wstring input;
+		std::getline(std::wcin, input);
+		if (input == L"back")
+		{
+			return new Matrix();
+		}
+		try {
+			int size = stoi(input);
+			valid = true;
+		}
+		catch (const std::invalid_argument& ia)
+		{
+			std::wcout << L"Это неправильный размер" << std::endl;
+		}
+	}
+	return new Matrix();
+}
 
 int main()
 {
+	Matrix matrix;
 	auto mode = _setmode(_fileno(stdout), _O_U16TEXT);
 	mode = _setmode(_fileno(stdin), _O_U16TEXT);
 	mode = _setmode(_fileno(stderr), _O_U16TEXT);
@@ -51,6 +80,16 @@ int main()
 		{
 			exit(0);
 		}
-		else std::wcout << L"Комманда не найдена" << std::endl;
+		else if (command == L"create")
+		{
+			matrix = createMatrix();
+			ClearConsole();
+			logo();
+		}
+		else {
+			ClearConsole();
+			logo();
+			std::wcout << L"Команда не найдена" << std::endl;
+		}
 	}
 }
