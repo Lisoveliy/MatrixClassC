@@ -29,11 +29,20 @@ public:
 	Matrix()
 	{
 		this->degree = 3;
-		this->element = new double* [3] {
+		this->element = new double* [degree];
+		for (int i = 0; i < degree; i++)
+		{
+			this->element[i] = new double[degree];
+			for (int i2 = 0; i2 < degree; i2++)
+			{
+				this->element[i][i2] = 0;
+			}
+		}
+		setElements(new double* [3] {
 			new double[3] {0, 0, 0},
 				new double[3] {0, 0, 0},
 				new double[3] {0, 0, 0}
-		};
+			});
 	}
 	Matrix(int degree, double** element) {
 		this->degree = degree;
@@ -76,9 +85,9 @@ public:
 		{
 			for (int i2 = 0; i2 < degree; i2++)
 			{
-				std::cout << element[i][i2] << " ";
+				std::wcout << getElements()[i][i2] << " ";
 			}
-			std::cout << std::endl;
+			std::wcout << std::endl;
 		}
 	}
 	Matrix Transponse()
@@ -202,5 +211,21 @@ public:
 			row--;
 		}
 		return det;
+	}
+	bool operator == (const Matrix &x)
+	{
+		if (this->degree != x.degree)
+		{
+			return false;
+		}
+		for (int i = 0; i < this->degree; i++)
+		{
+			for (int i2 = 0; i < this->degree; i2++)
+			{
+				if (this->element[i][i2] != x.element[i][i2])
+					return false;
+			}
+		}
+		return true;
 	}
 };
