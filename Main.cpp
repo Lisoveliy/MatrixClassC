@@ -31,6 +31,8 @@ namespace UI {
 		std::wcout << L"trans ptr - записать транспонированную матрицу" << std::endl;
 		std::wcout << L"reverse view - вывести обратную матрицу" << std::endl;
 		std::wcout << L"reverse ptr - записать обратную матрицу" << std::endl;
+		std::wcout << L"change view - отобразить матрицу с изменённым i-столбцом и j-строкой" << std::endl;
+		std::wcout << L"change ptr - перезаписать матрицу с изменённым i-столбцом и j-строкой" << std::endl;
 		std::wcout << L"clear - очистить матрицу до нулевой" << std::endl;
 	}
 	void ClearConsole()
@@ -272,6 +274,43 @@ int main()
 			matrixptr->Inverse();
 			std::wcout << L"Матрица стала обратной и была перезаписана!" << std::endl;
 		}
+		else if (command == L"change view")
+		{
+			UI::ClearConsole();
+			UI::Logo();
+			std::wcout << L"Введите i и j(Праз Enter): " << std::endl;
+			std::wstring stri;
+			std::wstring strj;
+			int i;
+			int j;
+			std::getline(std::wcin, stri);
+			std::getline(std::wcin, strj);
+			i = stoi(stri);
+			j = stoi(strj);
+			Matrix changed = matrixptr->Change(i, j);
+			std::wcout << L"Изменённая матрица:" << std::endl;
+			changed.View();
+			std::wcout << L"Размерность: " << changed.getDegree() << "x" << changed.getDegree() << std::endl;
+			}
+			//bug save
+		else if (command == L"change ptr")
+		{
+			UI::ClearConsole();
+			UI::Logo();
+			std::wcout << L"Введите i и j(Праз Enter): " << std::endl;
+			std::wstring stri;
+			std::wstring strj;
+			int i;
+			int j;
+			std::getline(std::wcin, stri);
+			std::getline(std::wcin, strj);
+			i = stoi(stri);
+			j = stoi(strj);
+			matrixptr = new Matrix(matrixptr->Change(i, j));
+			std::wcout << L"Изменённая матрица:" << std::endl;
+			matrixptr->View();
+			std::wcout << L"Размерность: " << matrixptr->getDegree() << "x" << matrixptr->getDegree() << std::endl;
+			}
 		else if (command == L"write")
 		{
 			std::wofstream out("matrix.txt");
@@ -282,6 +321,16 @@ int main()
 			std::wcout.rdbuf(coutbuf);
 			std::wcout << L"Запись выполнена!" << std::endl;
 		}
+		//else if (command == L"debug")
+		//{
+		//	std::wcout << "Write string: ";
+		//	std::wstring input;
+		//	//std::getline(std::wcin, input);
+		//	input = L"1 2 3\n3 2 3\n5 0 1";
+		//	matrixptr = new Matrix(input);
+		//	matrixptr->View();
+		//	std::wcout << L"Размерность: " << matrixptr->getDegree() << "x" << matrixptr->getDegree() << std::endl;
+		//}
 		else {
 			UI::ClearConsole();
 			UI::Logo();

@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include <string>
 
 class Matrix {
 private:
@@ -25,7 +26,6 @@ public:
 	{
 		this->element = elements;
 	}
-public:
 	Matrix()
 	{
 		this->degree = 3;
@@ -48,6 +48,8 @@ public:
 		this->degree = degree;
 		double** newelement = new double* [degree];
 		for (int i = 0; i < degree; i++)
+
+
 		{
 			newelement[i] = new double[degree];
 			for (int i2 = 0; i2 < degree; i2++)
@@ -71,6 +73,45 @@ public:
 		}
 		this->element = newelement;
 	}
+	//Matrix(std::wstring matrix)
+	//{
+	//	//found degree
+	//	int degree = 0;
+	//	for (int ptr = 0; ptr < matrix.length(); ptr++)
+	//	{
+	//		if (matrix[ptr] == ' ')
+	//		{
+	//			degree++;
+	//		}
+	//		if (matrix[ptr] == '\n')
+	//		{
+	//			degree++;
+	//			break;
+	//		}
+	//	}
+	//	//get elements
+	//	double** prepareelements = new double*[degree];
+	//	this->degree = degree;
+	//	for (int row = 0; row < degree; row++)
+	//	{
+	//		prepareelements[row] = new double[degree];
+	//		int column = 0;
+	//		std::wstring input;
+	//		for (int ptr = 0; matrix[ptr+(row*degree)] != '\n'; ptr++) {
+	//			if(matrix[ptr+(row * degree)] != ' ' && matrix[ptr+(row * degree)] != '\n')
+	//			{
+	//				input += matrix[ptr+ (row * degree)];
+	//			}
+	//			else
+	//			{
+	//				prepareelements[row][column] = stoi(input);
+	//				column++;
+	//				input = L"";
+	//			}
+	//		}
+	//	}
+	//	this->element = prepareelements;
+	//}
 	~Matrix()
 	{
 		for (int i = 0; i < degree; i++)
@@ -211,6 +252,23 @@ public:
 			row--;
 		}
 		return det;
+	}
+	//AX=B? Я не пон. что она хочет
+	Matrix Change(int i, int j)
+	{
+		Matrix* changed = new Matrix(this);
+		double* icolumn = changed->getElements()[i - 1];
+		double* jrow = new double[changed->degree];
+		for (int iter = 0; iter < changed->degree; iter++)
+		{
+			jrow[iter] = changed->getElements()[iter][i - 1];
+		}
+		changed->element[i - 1] = jrow;
+		for (int iter = 0; iter < changed->degree; iter++)
+		{
+			changed->element[iter][i - 1] = icolumn[iter];
+		}
+		return new Matrix(changed);
 	}
 	bool operator == (const Matrix &x)
 	{
